@@ -18,4 +18,19 @@ class UserController extends Controller
             return redirect('/');
         }
     }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|min:6|max:12'
+        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return redirect()->route('login');
+    }
 }
